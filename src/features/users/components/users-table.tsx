@@ -7,6 +7,7 @@ import {
   flexRender,
   ColumnDef
 } from '@tanstack/react-table';
+import { useAppSelector } from '@/store';
 
 interface User {
   id: number;
@@ -14,13 +15,8 @@ interface User {
   email: string;
 }
 
-const data: User[] = [
-  { id: 1, name: 'Alice', email: 'alice@example.com' },
-  { id: 2, name: 'Bob', email: 'bob@example.com' },
-  { id: 3, name: 'Carol', email: 'carol@example.com' }
-];
-
 export default function UsersTable() {
+  const data = useAppSelector(state => state.users);
   const columns = useMemo<ColumnDef<User>[]>(
     () => [
       { accessorKey: 'id', header: 'ID' },
