@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@/components/ui/button';
+import { useAppDispatch } from '@/store';
+import { addUser } from '../state/usersSlice';
 
 const schema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -13,6 +15,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function UserForm() {
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -20,7 +23,8 @@ export default function UserForm() {
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const onSubmit = (data: FormData) => {
-    alert(JSON.stringify(data, null, 2));
+    const newUser = { id: Date.now(), ...data };
+    dispatch(addUser(newUser));
   };
 
   return (
